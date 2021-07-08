@@ -18,6 +18,10 @@ config :auth_jwt_guardian, AuthJwtGuardianWeb.Endpoint,
   pubsub_server: AuthJwtGuardian.PubSub,
   live_view: [signing_salt: "8uro1uaW"]
 
+config :auth_jwt_guardian, AuthJwtGuardianWeb.Guardian,
+  issuer: "auth_jwt_guardian",
+  secret_key: "oT27mwvymad0JkflFqomstqAK1Lfgd8dtUFtNs5Y8tKZdjGtAk5YeV66/9PUzMc1"
+
 # Configures Elixir's Logger
 config :logger, :console,
   format: "$time $metadata[$level] $message\n",

@@ -1,6 +1,7 @@
-defmodule AuthJwtGuardianWeb.Guardian do
+defmodule AuthJwtGuardian.Guardian do
   use Guardian, otp_app: :auth_jwt_guardian
 
+  @spec subject_for_token(atom | %{:id => any, optional(any) => any}, any) :: {:ok, binary}
   def subject_for_token(user, _claims) do
     sub = to_string(user.id)
     {:ok, sub}
@@ -12,7 +13,7 @@ defmodule AuthJwtGuardianWeb.Guardian do
 
   def resource_from_claims(claims) do
     id = claims["sub"]
-    resource = AuthJwtGuardianWeb.Users.get_user!(id)
+    resource = AuthJwtGuardian.Users.get_user!(id)
     {:ok,  resource}
   end
 

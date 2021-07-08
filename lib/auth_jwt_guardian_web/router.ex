@@ -1,5 +1,6 @@
 defmodule AuthJwtGuardianWeb.Router do
   use AuthJwtGuardianWeb, :router
+  alias AuthJwtGuardian.Guardian
 
   pipeline :browser do
     plug :accepts, ["html"]
@@ -13,16 +14,30 @@ defmodule AuthJwtGuardianWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :jwt_authenticated do
+    plug Guardian.AuthPipeline
+  end
+
+  pipeline :jwt_authenticated do
+    plug AuthJwtGuardian.Guardian.AuthPipeline
+  end
+
+  scope "/api", AuthJwtGuardianWeb do
+    pipe_through [:api, :jwt_authenticated]
+
+  end
+
   scope "/", AuthJwtGuardianWeb do
     pipe_through :browser
-
     get "/", PageController, :index
   end
 
   # Other scopes may use custom stacks.
-  # scope "/api", AuthJwtGuardianWeb do
-  #   pipe_through :api
-  # end
+  scope "/api", AuthJwtGuardianWeb do
+    pipe_through :api
+    post "/sign_up", UserController, :sign_up
+    post "/sign_in", UserController, :sign_in
+  end
 
   # Enables LiveDashboard only for development
   #
